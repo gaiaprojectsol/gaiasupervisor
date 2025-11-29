@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Gaia Project — Supervisor v1.6</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #111;
+  color: #eee;
+}
+
+header {
+  background: #1b1b1b;
+  padding: 15px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.container {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid #333;
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #9ddbff;
+}
+
+pre {
+  background: #000;
+  padding: 10px;
+  white-space: pre-wrap;
+  border-radius: 6px;
+  font-size: 13px;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+button {
+  background: #007aff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #0091ff;
+}
+</style>
+</head>
+
+<body>
+<header>GAIA SUPERVISOR v1.6 — Dashboard</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Daily Report</h2>
+    <button onclick="generateReport()">Generate Daily Report</button>
+    <pre id="reportBox">(No report yet)</pre>
+  </div>
+
+  <div class="card">
+    <h2>Roadmap State</h2>
+    <button onclick="loadState()">Refresh State</button>
+    <pre id="roadmapBox">Loading...</pre>
+  </div>
+
+  <div class="card">
+    <h2>Pending Commits</h2>
+    <pre id="commitBox">Loading...</pre>
+  </div>
+
+  <div class="card">
+    <h2>Latest Alignment Report</h2>
+    <pre id="latestReportBox">Loading...</pre>
+  </div>
+
+</div>
+
+<script>
+async function loadState() {
+  const res = await fetch("/state");
+  const json = await res.json();
+
+  document.getElementById("roadmapBox").textContent =
+    JSON.stringify({ roadmap: json.roadmap, state: json.state }, null, 2);
+
+  document.getElementById("commitBox").textContent =
+    JSON.stringify(json.pendingCommits, null, 2);
+
+  document.getElementById("latestReportBox").textContent =
+    JSON.stringify(json.latestReport || {}, null, 2);
+}
+
+async function generateReport() {
+  const res = await fetch("/generate-report", { method: "POST" });
+  const json = await res.json();
+
+  document.getElementById("reportBox").textContent =
+    JSON.stringify(json, null, 2);
+
+  loadState();
+}
+
+loadState();
+</script>
+
+</body>
+</html>
