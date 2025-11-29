@@ -1,0 +1,29 @@
+{
+  "modules": {
+    "blockchain-connection": {
+      "goal": "Implement Solana RPC wrapper with mock/devnet/mainnet support",
+      "description": "Allows games to read wallet data + NFT metadata safely",
+      "weight": 20
+    },
+    "nft-loader": {
+      "goal": "Load Genean NFTs, extract traits, normalize format",
+      "description": "Provides character stats for Gaia games",
+      "weight": 20
+    },
+    "sprite-module": {
+      "goal": "Modular sprite animator with action-defined frame sets",
+      "description": "Character animations (idle/walk/run/jump/emotes)",
+      "weight": 30
+    },
+    "gaia-config": {
+      "goal": "Centralised configuration system for all Gaia games",
+      "description": "Switch between mock/mainnet, tuning constants",
+      "weight": 10
+    },
+    "utils": {
+      "goal": "Shared utility functions: RNG, math helpers, formatting",
+      "description": "Consistent shared logic across modules",
+      "weight": 20
+    }
+  }
+}
